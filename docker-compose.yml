@@ -1,0 +1,21 @@
+version: '3'
+services:
+  api:
+    build: ./api
+    container_name: core_api
+    volumes:
+      - ./api:/api
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PW=${DB_PW}
+      - DB_IP=${DB_IP}
+      - DB_PORT=${DB_PORT}
+  web_app:
+    build: ./web
+    ports:
+     - "5000:5000"
+    volumes:
+     - ./web:/web

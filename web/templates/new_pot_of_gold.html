@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>New Pot of Gold</title>
+{% endblock %}
+
+{% block body %}
+    <h2>New Pot</h2>
+
+    <form action="/create" method="POST">
+        <input type="hidden" name="user_id" value="1">
+        <div class="form-group">
+            <label for="pot_name">Pot of Gold Name</label>
+            <input class="form-control" id="pot_name" type="text" name="pot_name" value="">
+        </div>
+        <div class="form-group">
+            <label for="auto_increment">Auto Increment Options</label>
+            <select class="form-control" id="auto_increment" name="auto_increment">
+                <option value="0">Do not auto increment</option>
+                <option value="1">Bi-Weekly</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="increment_amount">Increment Amount</label>
+            <input class="form-control" type="number" id="increment_amount" name="increment_amount">
+        </div>
+        <div class="form-group">
+            <label for="first_increment_date">First Increment Date</label>
+            <input class="form-control" type="date" id="first_increment_date" name="first_increment_date">
+        </div>
+        <div class="form-group">
+            <label for="current_amount">Initial Value</label>
+            <input class="form-control" id="current_amount" type="text" name="current_amount" value="0">
+        </div>
+        <input type="submit" value="Create Pot">
+        </form>
+        <a href="/pots">Cancel</a>
+    </div>
+{% endblock %}

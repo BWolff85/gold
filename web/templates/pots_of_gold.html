@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Pots of Gold</title>
+{% endblock %}
+
+{% block body %}
+<a href="/new">Add new</a>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Pot Name</th>
+                <th>Current Amount</th>
+                <th>Auto Increment</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pot in pots %}
+            <tr>
+                <td>{{ pot.pot_of_gold_name }}</td>
+                <td>{{ pot.current_amount }}</td>
+                <td>{{ pot.auto_increment }}</td>
+                <td>
+                    <a href="/delete/{{ pot.pot_of_gold_id }}">Delete</a><br>
+                    <a href="/edit/{{ pot.pot_of_gold_id }}">Update</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

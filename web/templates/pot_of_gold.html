@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>{{ pot.pot_of_gold_name }}</title>
+{% endblock %}
+
+{% block body %}
+    <h1>{{ pot.pot_of_gold_name }}</h1>
+    <h3>This pot has ${{ pot.current_amount }} in it</h3>
+    <form action="/deposit" method="post">
+        <input type="hidden" name="pot_of_gold_id" value="{{ pot.pot_of_gold_id }}">
+        <input type="hidden" name="user_id" value="{{ pot.user_id }}">
+        <input type="hidden" name="current_amount" value="{{ pot.current_amount }}">
+        <input type="hidden" name="pot_of_gold_name" value="{{ pot.pot_of_gold_name }}">
+        <input type="hidden" name="auto_increment" value="{{ pot.auto_increment }}">
+        <input type="number" step="0.01" name="amount" value="">
+        <button type="submit">Make one time deposit</button>
+        <label>Comment: </label><input type="text" name="comment" value="">
+    </form>
+
+    <form action="/debit" method="post">
+        <input type="hidden" name="pot_of_gold_id" value="{{ pot.pot_of_gold_id }}">
+        <input type="hidden" name="user_id" value="{{ pot.user_id }}">
+        <input type="hidden" name="current_amount" value="{{ pot.current_amount }}">
+        <input type="hidden" name="pot_of_gold_name" value="{{ pot.pot_of_gold_name }}">
+        <input type="hidden" name="auto_increment" value="{{ pot.auto_increment }}">
+        <input type="number" step="0.01"  name="amount" value="">
+        
+        <button type="submit">I Spent some of this</button>
+        <label>Comment: </label><input type="text" name="comment" value="">
+    </form>
+
+    <table id="pot-{{ pot.pot_of_gold_id }}-history" class="table">
+        <thead>
+            <tr>
+                <th>Activity Comment</th>
+                <th>Change</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for history in history_list %}
+            <tr>
+                <td>{{ history.comment }}</td>
+                <td>{{ history.new_amount - history.previous_amount}} </td>
+                <td>{{ history.pot_of_gold_history_timestamp}} </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="/pots/{{ pot.user_id }}">Back to List</a>
+    <script>
+        $(document).ready( function () {
+            $("#pot-{{ pot.pot_of_gold_id }}-history").DataTable({
+                "order": [ [ 2, 'desc' ]]
+            });
+        } );
+    </script>
+{% endblock %}
