@@ -7,7 +7,7 @@
 {% block body %}
 <a href="/new">Add new</a>
 <div>
-    <table class="table">
+    <table class="table" id="pots-of-gold-table">
         <thead>
             <tr>
                 <th>Pot Name</th>
@@ -29,6 +29,26 @@
             </tr>
         {% endfor %}
         </tbody>
+        <tfoot>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </tfoot>
     </table>
 </div>
+<script>
+    $(document).ready( function () {
+       dt = $("#pots-of-gold-table").DataTable({
+            drawCallback: function () {
+                var api = this.api();
+                $( api.column(1).footer() ).html(
+                    api.column(1).data().sum()
+                );
+            }
+        });
+    } );
+</script>
 {% endblock %}
