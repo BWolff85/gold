@@ -7,11 +7,11 @@ from api.models.pot_of_gold_history import pot_of_gold_history_model
 
 class pot_of_gold_resource(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('pot_of_gold_id', type=int)
-    parser.add_argument('user_id',  type=int, required=True, help="This field cannot be left blank!" )
-    parser.add_argument('pot_of_gold_name', type=str, required=True, help="This field cannot be left blank!" )
-    parser.add_argument('current_amount', type=float )
-    parser.add_argument('auto_increment', type=bool )
+    parser.add_argument('pot_of_gold_id', type=int, location='form')
+    parser.add_argument('user_id',  type=int, required=True, help="This field cannot be left blank!", location='form' )
+    parser.add_argument('pot_of_gold_name', type=str, required=True, help="This field cannot be left blank!", location='form' )
+    parser.add_argument('current_amount', type=float, location='form' )
+    parser.add_argument('auto_increment', type=bool, location='form' )
 
     def get(self, pot_of_gold_id):
         print('You have reached the pot_of_gold get resource', file=sys.stderr)
@@ -22,7 +22,7 @@ class pot_of_gold_resource(Resource):
 
     def post(self):
         print('You have reached the pot_of_gold post resource', file=sys.stderr)
-        print(request.json, file=sys.stderr)
+        print(request.data, file=sys.stderr)
         data = pot_of_gold_resource.parser.parse_args()
         pot = pot_of_gold_model(**data)
         prev_amt = request.form["previous_amount"]
