@@ -22,15 +22,22 @@ class pot_auto_increment_model(db.Model):
             "pot_of_gold_id": self.pot_of_gold_id,
             "auto_increment_option_id": self.auto_increment_option_id,
             "increment_amount": self.increment_amount,
-            "most_recent_increment": self.most_recent_increment.strftime("%m/%d/%Y, %H:%M:%S"),
-            "next_increment": self.next_increment.strftime("%m/%d/%Y, %H:%M:%S")
+            "most_recent_increment": (self.most_recent_increment.strftime("%Y-%m-%d") if self.most_recent_increment else ""),
+            "next_increment": (self.next_increment.strftime("%Y-%m-%d") if self.next_increment else "")
         }
 
 
     def save_to_db(self):
-        print('Attmpting to save to db ' + str(self), file=sys.stderr)
-        db.session.add(self)
-        db.session.commit()
+        print('Attmpting to save to db ' + str(self.json()), file=sys.stderr)
+        try:
+            if not self.pot_of_gold_id:
+                db.session.add(self)
+            else:
+                db.session.merge(self)
+            db.session.commit()
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            print('An error occurred ' + str(error), file=sys.stderr)
 
 
     def delete_from_db(self):

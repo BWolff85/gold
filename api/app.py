@@ -10,6 +10,7 @@ from werkzeug.utils import redirect
 from api.AutoIncrement import AutoIncrement
 from api.resources.pot_of_gold import pot_of_gold_resource, pot_of_gold_list_resource
 from api.resources.pot_of_gold_history import pot_of_gold_history_resource, pot_of_gold_history_list_resource
+from api.resources.pot_auto_increment import pot_auto_increment_resource
 from api.db import db
 import sys
 
@@ -23,6 +24,8 @@ api.add_resource(pot_of_gold_list_resource, '/pots_of_gold')
 
 api.add_resource(pot_of_gold_history_resource, '/pot_of_gold_history/<int:pot_of_gold_history_id>', '/pot_of_gold_history')
 api.add_resource(pot_of_gold_history_list_resource, '/pots_of_gold/history/<int:pot_of_gold_id>')
+
+api.add_resource(pot_auto_increment_resource, '/pot_auto_increment/<int:pot_of_gold_id>', '/pot_auto_increment')
 
 @app.route('/')
 def hello_world():
