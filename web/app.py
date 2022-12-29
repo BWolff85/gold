@@ -2,7 +2,6 @@ from flask import Flask, render_template, request
 from flask import jsonify
 import requests
 import sys
-from datetime import datetime
 
 from werkzeug.utils import redirect
 
