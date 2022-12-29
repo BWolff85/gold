@@ -118,15 +118,56 @@ def edit_pot(pot_of_gold_id):
     history_list = history_r.json()
     history = history_list['pot_history']
     # return render_template("pot_of_gold.html", pot=pot)
+
+    increment_url = 'http://api:3000/pot_auto_increment/' + str(pot_of_gold_id)
+    increment_r = requests.get(increment_url)
+    print('Increment request has returned', file=sys.stderr)
+    increment = increment_r.json()
+    print(increment, file=sys.stderr)
+
     try:
         print('Working with pot ' + str(pot["pot_of_gold_id"]), file=sys.stderr)
-        return render_template("pot_of_gold.html", pot=pot, history_list=history)
+        return render_template("pot_of_gold.html", pot=pot, history_list=history, increment=increment)
     except:
         return "SOMETHING HAS GONE WRONG " + str(pot)
     # pot = pot_of_gold()
     # pot.load_by_id(pot_of_gold_id)
     # if pot.is_loaded():
     #     return render_template("pot_of_gold.html", pot=pot)
+
+
+@app.route('/update',  methods=["POST"])
+def update():
+    print('You have reached the pots_of_gold update', file=sys.stderr)
+
+    pot_id = request.form.get('pot_of_gold_id')
+    user_id = request.form.get('user_id')
+    pot_of_gold_name = request.form.get('pot_of_gold_name')
+    auto_increment = request.form.get('auto_increment')
+    current_amount = request.form.get('current_amount')
+    payload = {"user_id": user_id, "pot_of_gold_name": pot_of_gold_name, "auto_increment": auto_increment,
+               "current_amount": current_amount, "pot_of_gold_id": pot_id}
+    print('Pot id ' + str(pot_id), file=sys.stderr)
+    print(payload, file=sys.stderr)
+    url = 'http://api:3000/pot_of_gold'
+    r = requests.post(url, data=payload)
+    return redirect('/edit/' + str(pot_id))
+
+@app.route('/increment_update',  methods=["POST"])
+def increment_update():
+    print('You have reached the increment update', file=sys.stderr)
+    pot_of_gold_id = request.form.get('pot_of_gold_id')
+    auto_increment_option_id = request.form.get('auto_increment_option_id')
+    increment_amount = request.form.get('increment_amount')
+    most_recent_increment = request.form.get('most_recent_increment')
+    next_increment = request.form.get('next_increment')
+    payload = {"pot_of_gold_id": pot_of_gold_id, "auto_increment_option_id": auto_increment_option_id, "increment_amount": increment_amount,
+               "most_recent_increment": most_recent_increment, "next_increment": next_increment}
+    print('pot_of_gold_id ' + str(pot_of_gold_id), file=sys.stderr)
+    print(payload, file=sys.stderr)
+    url = 'http://api:3000/pot_auto_increment'
+    r = requests.post(url, data=payload)
+    return redirect('/edit/' + str(pot_of_gold_id))
 
 @app.route('/create', methods=['POST'])
 def create_pot():
