@@ -1,6 +1,7 @@
 import sys
 from flask_restful import Resource
 from flask_restful import Resource, reqparse
+from flask_restful import inputs
 from flask import Flask, request
 from api.models.pot_of_gold import pot_of_gold_model
 from api.models.pot_of_gold_history import pot_of_gold_history_model
@@ -11,7 +12,7 @@ class pot_of_gold_resource(Resource):
     parser.add_argument('user_id',  type=int, required=True, help="This field cannot be left blank!", location='form' )
     parser.add_argument('pot_of_gold_name', type=str, required=True, help="This field cannot be left blank!", location='form' )
     parser.add_argument('current_amount', type=float, location='form' )
-    parser.add_argument('auto_increment', type=bool, location='form' )
+    parser.add_argument('auto_increment', type=inputs.boolean, location='form' )
 
     def get(self, pot_of_gold_id):
         print('You have reached the pot_of_gold get resource', file=sys.stderr)

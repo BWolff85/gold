@@ -30,6 +30,20 @@
         <label>Comment: </label><input type="text" name="comment" value="">
     </form>
 
+    <form action="/update" method="post">
+        <input type="hidden" name="pot_of_gold_id" value="{{ pot.pot_of_gold_id }}">
+        <input type="hidden" name="user_id" value="{{ pot.user_id }}">
+        <input type="hidden" name="current_amount" value="{{ pot.current_amount }}">
+        <input type="hidden" name="pot_of_gold_name" value="{{ pot.pot_of_gold_name }}">
+
+        <select name="auto_increment">
+            <option value="False" {% if pot.auto_increment!=1 %} selected="selected"{% endif %}>Don't auto increment</option>
+            <option value="True" {% if pot.auto_increment==1 %} selected="selected"{% endif %}>Auto Increment</option>
+        </select>
+        
+        <button type="U">Save</button>
+    </form>
+
     <table id="pot-{{ pot.pot_of_gold_id }}-history" class="table">
         <thead>
             <tr>

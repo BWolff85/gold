@@ -128,6 +128,24 @@ def edit_pot(pot_of_gold_id):
     # if pot.is_loaded():
     #     return render_template("pot_of_gold.html", pot=pot)
 
+
+@app.route('/update',  methods=["POST"])
+def update():
+    print('You have reached the pots_of_gold update', file=sys.stderr)
+
+    pot_id = request.form.get('pot_of_gold_id')
+    user_id = request.form.get('user_id')
+    pot_of_gold_name = request.form.get('pot_of_gold_name')
+    auto_increment = request.form.get('auto_increment')
+    current_amount = request.form.get('current_amount')
+    payload = {"user_id": user_id, "pot_of_gold_name": pot_of_gold_name, "auto_increment": auto_increment,
+               "current_amount": current_amount, "pot_of_gold_id": pot_id}
+    print('Pot id ' + str(pot_id), file=sys.stderr)
+    print(payload, file=sys.stderr)
+    url = 'http://api:3000/pot_of_gold'
+    r = requests.post(url, data=payload)
+    return redirect('/edit/' + str(pot_id))
+
 @app.route('/create', methods=['POST'])
 def create_pot():
     uid = request.form['user_id']
