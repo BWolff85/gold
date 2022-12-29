@@ -25,7 +25,7 @@ class pot_of_gold_resource(Resource):
         print(request.data, file=sys.stderr)
         data = pot_of_gold_resource.parser.parse_args()
         pot = pot_of_gold_model(**data)
-        prev_amt = request.form["previous_amount"]
+        prev_amt = request.form.get("previous_amount", None)
         if (prev_amt is not None):
             comment = request.form["comment"]
             pot_of_gold_model.log_increment(pot_of_gold_id=pot.pot_of_gold_id, previous_amount=prev_amt, new_amount=pot.current_amount, comment=comment)
