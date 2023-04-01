@@ -13,6 +13,7 @@
                 <th>Pot Name</th>
                 <th>Current Amount</th>
                 <th>Auto Increment</th>
+                <th>Increment Amount</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -22,6 +23,7 @@
                 <td>{{ pot.pot_of_gold_name }}</td>
                 <td>{{ pot.current_amount }}</td>
                 <td>{{ pot.auto_increment }}</td>
+                <td>{{ pot.increment_amount }}</td>
                 <td>
                     <a href="/delete/{{ pot.pot_of_gold_id }}">Delete</a><br>
                     <a href="/edit/{{ pot.pot_of_gold_id }}">Update</a>
