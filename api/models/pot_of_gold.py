@@ -2,6 +2,7 @@ from api.db import db
 import sys
 from sqlalchemy.exc import SQLAlchemyError
 from api.models.pot_of_gold_history import pot_of_gold_history_model
+from api.models.pot_auto_increment import pot_auto_increment_model
 
 class pot_of_gold_model(db.Model):
     __tablename__ = 'pot_of_gold'
@@ -21,12 +22,15 @@ class pot_of_gold_model(db.Model):
         print('from model, Pot id ' + str(self.pot_of_gold_id), file=sys.stderr)
 
     def json(self):
+        ai = pot_auto_increment_model.find_by_id(self.pot_of_gold_id)
+        ai_amount = ai.increment_amount if self.auto_increment else 0
         return {
             "pot_of_gold_id": self.pot_of_gold_id,
             "user_id": self.user_id,
             "pot_of_gold_name": self.pot_of_gold_name,
             "current_amount": self.current_amount,
-            "auto_increment": self.auto_increment
+            "auto_increment": self.auto_increment,
+            "increment_amount": ai_amount
         }
 
     def is_loaded(self):
