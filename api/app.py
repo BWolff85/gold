@@ -8,10 +8,12 @@ import mysql.connector
 from mysql.connector import Error
 from werkzeug.utils import redirect
 from api.AutoIncrement import AutoIncrement
+from api.Projection import Projection
 from api.resources.pot_of_gold import pot_of_gold_resource, pot_of_gold_list_resource
 from api.resources.pot_of_gold_history import pot_of_gold_history_resource, pot_of_gold_history_list_resource
 from api.resources.pot_auto_increment import pot_auto_increment_resource
 from api.db import db
+from datetime import datetime
 import sys
 
 app = Flask(__name__)
@@ -44,6 +46,13 @@ def test_auto_increment(user_id):
     print('You have reached the api test_auto_increment test', file=sys.stderr)
     return jsonify({"msg": "BOO"})
     # return 'For %s, the last increment date was %s. It has increment option %s' % (user_id, test_date, option_id)
+
+@app.route('/pots/<pot_id>/project/<target_date>')
+def project_pot(pot_id, target_date):
+    target = datetime.strptime(target_date, "%Y-%m-%d")
+    projector = Projection()
+    projections = projector.poject_pot(pot_id, target)
+    return jsonify(projections)
 
 
 @app.route('/dbtest')
