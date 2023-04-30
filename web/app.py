@@ -130,10 +130,6 @@ def edit_pot(pot_of_gold_id):
         return render_template("pot_of_gold.html", pot=pot, history_list=history, increment=increment)
     except:
         return "SOMETHING HAS GONE WRONG " + str(pot)
-    # pot = pot_of_gold()
-    # pot.load_by_id(pot_of_gold_id)
-    # if pot.is_loaded():
-    #     return render_template("pot_of_gold.html", pot=pot)
 
 
 @app.route('/update',  methods=["POST"])
@@ -184,28 +180,16 @@ def create_pot():
     url = 'http://api:3000/pot_of_gold'
     r = requests.post(url, data=payload)
     return redirect('/pots')
-    # uid = request.form['user_id']
-    # name = request.form['pot_name']
-    # auto_option = request.form['auto_increment']
-    # auto = 1 if int(auto_option) > 0 else 0
-    # auto_date = request.form['first_increment_date']
-    # amt = request.form['increment_amount']
-    # init_val = request.form['current_amount']
-    #
-    # cur = mysql.connection.cursor()
-    # try:
-    #     cur.execute("INSERT INTO pots_of_gold.pot_of_gold (user_id, pot_of_gold_name, current_amount, auto_increment) VALUES (%s, %s, %s, %s)", [uid, name, init_val, auto])
-    #     mysql.connection.commit()
-    #     id = cur.lastrowid
-    # except Error as err:
-    #     return "Unable to insert " + err.msg
-    # # retval = "I shall create a pot for user " + uid + " called " + name + " with a starting value of " + init_val + ". ID is " + str(id)
-    # if auto:
-    #     cur2 = mysql.connection.cursor()
-    #     cur2.execute("INSERT INTO pots_of_gold.pot_auto_increment (pot_of_gold_id, auto_increment_option_id, increment_amount, next_increment) VALUES (%s, %s, %s, %s)", [id, auto_option, amt, auto_date])
-    #     mysql.connection.commit()
-    # return redirect('/pots/'+uid)
-    # # return render_template("pots_of_gold.html")+
+
+@app.route('/pots/<int:pot_id>/project/', methods=['GET', 'POST'])
+@app.route('/pots/<int:pot_id>/project/<string:target_date>/', methods=['GET', 'POST'])
+def project(pot_id, target_date = None):
+    if request.method == "POST":
+        target_date = request.form["target_date"]
+    api_url = f"http://api:3000/pots/{pot_id}/project/{target_date}"
+    response = requests.get(api_url)
+    data = response.json()
+    return render_template("project.html", pot_id=pot_id, target_date=target_date, data=data)
 
 @app.route('/test_auto_increment', defaults={'user_id': 1})
 @app.route('/test_auto_increment/<user_id>')

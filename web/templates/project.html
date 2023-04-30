@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block body %}
+  <h1>Project for Pot {{ pot_id }} on {{ target_date }}</h1>
+  
+  <form method="POST" action="{{ url_for('project', pot_id=pot_id, target_date=target_date) }}">
+    <div class="form-group">
+      <label for="target_date">Target Date:</label>
+      <input type="date" class="form-control" id="target_date" name="target_date" value="{{ target_date }}" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Project Pot</button>
+  </form>
+
+  {% if data %}
+    {% if data|length > 10 %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Increment Date</th>
+            <th>Total Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in data[:2] %}
+            <tr>
+              <td>{{ item.increment_date }}</td>
+              <td>{{ item.total_amount }}</td>
+            </tr>
+          {% endfor %}
+          {% for item in data[2:-2] %}
+            <tr class="hidden">
+              <td>{{ item.increment_date }}</td>
+              <td>{{ item.total_amount }}</td>
+            </tr>
+          {% endfor %}
+          <tr id="hidden-row">
+            <td colspan="2" class="text-center">...</td>
+          </tr>
+          {% for item in data[-2:] %}
+            <tr>
+              <td>{{ item.increment_date }}</td>
+              <td>{{ item.total_amount }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <script>
+        $(document).ready(function() {
+          $('#hidden-row').click(function() {
+            $('.hidden').toggle();
+            $('#hidden-row').toggle();
+          });
+        });
+      </script>
+    {% else %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Increment Date</th>
+            <th>Total Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in data %}
+            <tr>
+              <td>{{ item.increment_date }}</td>
+              <td>{{ item.total_amount }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  {% else %}
+    <p>No data available.</p>
+  {% endif %}
+
+{% endblock %}
